@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fraud Detection</title>
+</head>
+
+<body>
+
+  <h1>Fraud Alert System</h1>
+
+  <h3 id="status">Waiting for alerts...</h3>
+
+
+  <script src="/socket.io/socket.io.js"></script>
+
+  <script>
+
+    const socket = io();
+
+
+    const user_id = "6a05edf6250a5f170c788028";
+
+  
+    socket.emit("join_user_room", user_id);
+
+    console.log("Joined room");
+
+
+    socket.on("fraud_alert", (data) => {
+
+      console.log("Fraud Alert Received");
+
+      console.log(data);
+
+      
+      alert(
+        `🚨 Fraud Alert!\n\n` +
+        `Transaction ID: ${data.txn_id}\n` +
+        `Message: ${data.message}\n` +
+        `Amount: ${data.amount}\n` +
+        `Location: ${data.location}`
+      );
+
+   
+      document.getElementById("status").innerHTML =
+        `
+        Fraud Detected! <br><br>
+
+        Transaction ID: ${data.txn_id} <br>
+        Message: ${data.message} <br>
+        Amount: ${data.amount} <br>
+        Location: ${data.location}
+        `;
+    });
+
+  </script>
+
+</body>
+</html>
